@@ -1,5 +1,6 @@
 import asyncio
 import os
+import sys
 import tempfile
 import uuid
 from collections.abc import AsyncIterator
@@ -153,7 +154,8 @@ async def test_cancel_while_waiting_stops_claude_code(
     ]
     assert len(stops) == 1
     assert not session.exists()
-    with pytest.raises(ProcessLookupError):
-        os.killpg(int(group), 0)
+    if sys.platform != "win32":
+        with pytest.raises(ProcessLookupError):
+            os.killpg(int(group), 0)
     assert not (workspace / "hello.txt").exists()
     await assert_replays(handle)
