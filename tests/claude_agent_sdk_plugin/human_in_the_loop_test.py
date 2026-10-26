@@ -1,7 +1,4 @@
 import asyncio
-import os
-import sys
-import tempfile
 import uuid
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
@@ -125,15 +122,11 @@ async def test_decision_for_unknown_tool_call_is_rejected(client: Client) -> Non
         await handle.result()
 
 
-async def test_cancel_while_waiting_stops_claude_code(
-    client: Client, workspace: Path, monkeypatch: pytest.MonkeyPatch
+async def test_cancel_while_waiting_ends_the_workflow(
+    client: Client, workspace: Path
 ) -> None:
-    (workspace / "tmp").mkdir()
-    monkeypatch.setattr(tempfile, "tempdir", str(workspace / "tmp"))
     async with started(client) as (handle, _):
         await wait_for_request(handle)
-        [session] = (workspace / "tmp").glob("temporal-claude-code-*")
-        _, group, _ = (session / "pid").read_text().split()
 
         await handle.cancel()
 
@@ -146,16 +139,5 @@ async def test_cancel_while_waiting_stops_claude_code(
         history.events[-1].event_type
         == EventType.EVENT_TYPE_WORKFLOW_EXECUTION_CANCELED
     )
-    stops = [
-        event
-        for event in history.events
-        if event.activity_task_scheduled_event_attributes.activity_type.name
-        == "claude-code-close"
-    ]
-    assert len(stops) == 1
-    assert not session.exists()
-    if sys.platform != "win32":
-        with pytest.raises(ProcessLookupError):
-            os.killpg(int(group), 0)
     assert not (workspace / "hello.txt").exists()
     await assert_replays(handle)

@@ -1,4 +1,3 @@
-# @@@SNIPSTART python-claude-agent-sdk-agent-chat-workflow
 import asyncio
 from dataclasses import dataclass
 
@@ -68,6 +67,3 @@ class ChatWorkflow:
             self.turns >= self.turns_per_run
             or workflow.info().is_continue_as_new_suggested()
         )
-
-
-# @@@SNIPEND

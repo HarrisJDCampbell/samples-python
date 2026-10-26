@@ -10,7 +10,6 @@ from claude_agent_sdk_plugin.multi_agent.workflow import MultiAgentWorkflow
 from claude_agent_sdk_plugin.offline import offline_api_if_requested
 
 
-# @@@SNIPSTART python-claude-agent-sdk-multi-agent-worker
 async def main() -> None:
     client = await Client.connect(os.environ.get("TEMPORAL_ADDRESS", "localhost:7233"))
     with offline_api_if_requested(ANSWERS):
@@ -22,9 +21,6 @@ async def main() -> None:
         ):
             print("Worker started. Ctrl+C to exit.")
             await asyncio.Event().wait()
-
-
-# @@@SNIPEND
 
 
 if __name__ == "__main__":

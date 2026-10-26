@@ -20,7 +20,6 @@ OFFLINE_ANSWERS: dict[str, Answer] = {
 }
 
 
-# @@@SNIPSTART python-claude-agent-sdk-plugins-worker
 async def main() -> None:
     client = await Client.connect(os.environ.get("TEMPORAL_ADDRESS", "localhost:7233"))
     with offline_api_if_requested(OFFLINE_ANSWERS):
@@ -32,9 +31,6 @@ async def main() -> None:
         )
         print("Worker started. Ctrl+C to exit.")
         await worker.run()
-
-
-# @@@SNIPEND
 
 
 if __name__ == "__main__":

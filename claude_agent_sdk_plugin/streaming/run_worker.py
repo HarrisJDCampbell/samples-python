@@ -16,14 +16,12 @@ OFFLINE_ANSWERS = {
 async def main() -> None:
     client = await Client.connect(os.environ.get("TEMPORAL_ADDRESS", "localhost:7233"))
 
-    # @@@SNIPSTART python-claude-agent-sdk-streaming-worker
     worker = Worker(
         client,
         task_queue="claude-agent-sdk-streaming",
         workflows=[StreamingWorkflow],
         plugins=[ClaudeAgentSDKPlugin()],
     )
-    # @@@SNIPEND
     with offline_api_if_requested(OFFLINE_ANSWERS):
         print("Worker started. Ctrl+C to exit.")
         await worker.run()

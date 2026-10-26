@@ -15,7 +15,6 @@ def offline_reply(request: dict[str, Any]) -> str:
     return f"Offline reply {earlier + 1} in this conversation."
 
 
-# @@@SNIPSTART python-claude-agent-sdk-agent-chat-worker
 async def main() -> None:
     client = await Client.connect(os.environ.get("TEMPORAL_ADDRESS", "localhost:7233"))
     with offline_api_if_requested({"": offline_reply}):
@@ -27,9 +26,6 @@ async def main() -> None:
         )
         print("Worker started. Ctrl+C to exit.")
         await worker.run()
-
-
-# @@@SNIPEND
 
 
 if __name__ == "__main__":

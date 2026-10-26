@@ -4645,7 +4645,7 @@ pydantic = [
 [[package]]
 name = "temporalio-claude-agent-sdk"
 version = "0.0.0"
-source = { git = "https://github.com/temporalio/ai-integrations?subdirectory=python%2Fclaude_agent_sdk&rev=2c722ff59250d3427ba5e43ea9713ecef959ee71#2c722ff59250d3427ba5e43ea9713ecef959ee71" }
+source = { git = "https://github.com/temporalio/ai-integrations?subdirectory=python%2Fclaude_agent_sdk&rev=f2218a3672dacaf9b88272278b06b614ad9d6d5e#f2218a3672dacaf9b88272278b06b614ad9d6d5e" }
 dependencies = [
     { name = "claude-agent-sdk" },
     { name = "temporalio" },
@@ -4904,7 +4904,7 @@ bedrock = [{ name = "boto3", specifier = ">=1.34.92,<2" }]
 claude-agent-sdk = [
     { name = "mcp", specifier = ">=1.0.0" },
     { name = "temporalio", extras = ["pydantic"], specifier = ">=1.34.0,<2" },
-    { name = "temporalio-claude-agent-sdk", git = "https://github.com/temporalio/ai-integrations?subdirectory=python%2Fclaude_agent_sdk&rev=2c722ff59250d3427ba5e43ea9713ecef959ee71" },
+    { name = "temporalio-claude-agent-sdk", git = "https://github.com/temporalio/ai-integrations?subdirectory=python%2Fclaude_agent_sdk&rev=f2218a3672dacaf9b88272278b06b614ad9d6d5e" },
 ]
 cloud-export-to-parquet = [
     { name = "boto3", specifier = ">=1.34.89,<2" },

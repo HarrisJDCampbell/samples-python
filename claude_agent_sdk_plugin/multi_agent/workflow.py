@@ -21,7 +21,6 @@ class Briefing:
     messages_by_agent: dict[str, list[str]] = field(default_factory=dict)
 
 
-# @@@SNIPSTART python-claude-agent-sdk-multi-agent-workflow
 @workflow.defn
 class MultiAgentWorkflow:
     @workflow.run
@@ -67,6 +66,3 @@ class MultiAgentWorkflow:
                 elif isinstance(message, ResultMessage):
                     result = message.result or ""
         return Briefing(result, messages_by_agent)
-
-
-# @@@SNIPEND

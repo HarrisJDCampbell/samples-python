@@ -1,4 +1,3 @@
-# @@@SNIPSTART python-claude-agent-sdk-tools-workflow
 from datetime import timedelta
 from typing import Any
 
@@ -56,6 +55,3 @@ class ToolsWorkflow:
                 if isinstance(message, ResultMessage):
                     result = message.result or "\n".join(message.errors or [])
         return result
-
-
-# @@@SNIPEND

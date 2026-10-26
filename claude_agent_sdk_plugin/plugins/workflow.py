@@ -1,4 +1,3 @@
-# @@@SNIPSTART python-claude-agent-sdk-plugins-workflow
 import os
 
 from claude_agent_sdk import ClaudeAgentOptions, ClaudeSDKClient, ResultMessage
@@ -25,6 +24,3 @@ class PluginsWorkflow:
                 if isinstance(message, ResultMessage):
                     reply = message.result or "\n".join(message.errors or [])
         return reply
-
-
-# @@@SNIPEND

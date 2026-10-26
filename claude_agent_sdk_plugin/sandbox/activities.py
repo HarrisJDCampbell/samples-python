@@ -60,7 +60,6 @@ def sandbox_env(request_env: dict[str, str]) -> dict[str, str]:
     return {"ANTHROPIC_API_KEY": PROXY_MANAGED_KEY, **forwarded, **request_env}
 
 
-# @@@SNIPSTART python-claude-agent-sdk-sandbox-activities
 @activity.defn
 async def launch_in_sandbox(request: LaunchRequest) -> str:
     async with heartbeating():
@@ -153,4 +152,3 @@ SBX_ACTIVITIES = TransportActivities(
     watch_output=watch_sandbox,
     stop=remove_sandbox,
 )
-# @@@SNIPEND

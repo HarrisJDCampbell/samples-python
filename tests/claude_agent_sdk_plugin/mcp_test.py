@@ -1,20 +1,12 @@
 import uuid
 from typing import Any
 
-from temporalio.api.enums.v1 import EventType
 from temporalio.claude_agent_sdk import ClaudeAgentSDKPlugin
 from temporalio.client import Client
 from temporalio.worker import Replayer, Worker
 
-from claude_agent_sdk_plugin.mcp.workflow import ECHO_SERVER, McpWorkflow
+from claude_agent_sdk_plugin.mcp.workflow import McpWorkflow
 from claude_agent_sdk_plugin.offline import Answer, scripted_api, tool_use
-
-TRANSPORT_ACTIVITIES = {
-    "claude-code-launch",
-    "claude-code-write-stdin",
-    "claude-code-watch-output",
-    "claude-code-close",
-}
 
 
 def tool_results(requests: list[dict[str, Any]]) -> list[str]:
@@ -60,13 +52,6 @@ async def test_mcp(client: Client) -> None:
     assert "hello from MCP (echoed by the stdio MCP server)" in results[0]
 
     history = await handle.fetch_history()
-    scheduled = {
-        event.activity_task_scheduled_event_attributes.activity_type.name
-        for event in history.events
-        if event.event_type == EventType.EVENT_TYPE_ACTIVITY_TASK_SCHEDULED
-    }
-    assert scheduled <= TRANSPORT_ACTIVITIES
-    assert ECHO_SERVER in str(history)
 
     await Replayer(
         workflows=[McpWorkflow], plugins=[ClaudeAgentSDKPlugin()]

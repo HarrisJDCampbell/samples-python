@@ -1,4 +1,3 @@
-# @@@SNIPSTART python-claude-agent-sdk-mcp-workflow
 from pathlib import Path
 
 from claude_agent_sdk import ClaudeAgentOptions, ClaudeSDKClient, ResultMessage
@@ -29,6 +28,3 @@ class McpWorkflow:
                 if isinstance(message, ResultMessage):
                     result = message.result or ""
         return result
-
-
-# @@@SNIPEND

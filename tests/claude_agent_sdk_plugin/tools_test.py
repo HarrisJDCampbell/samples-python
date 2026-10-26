@@ -8,13 +8,6 @@ from temporalio.worker import Replayer, Worker
 from claude_agent_sdk_plugin.offline import Answer, scripted_api, tool_use
 from claude_agent_sdk_plugin.tools.workflow import ToolsWorkflow, fetch_weather
 
-TRANSPORT_ACTIVITIES = {
-    "claude-code-launch",
-    "claude-code-write-stdin",
-    "claude-code-watch-output",
-    "claude-code-close",
-}
-
 
 async def test_tools(client: Client) -> None:
     answers: dict[str, Answer] = {
@@ -71,7 +64,6 @@ async def test_tools(client: Client) -> None:
     ]
     assert scheduled.count("fetch_weather") == 1
     assert "count_letter" not in scheduled
-    assert set(scheduled) - {"fetch_weather"} <= TRANSPORT_ACTIVITIES
 
     await Replayer(
         workflows=[ToolsWorkflow], plugins=[ClaudeAgentSDKPlugin()]

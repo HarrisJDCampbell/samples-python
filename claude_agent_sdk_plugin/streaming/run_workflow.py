@@ -14,7 +14,6 @@ async def main() -> None:
     client = await Client.connect(os.environ.get("TEMPORAL_ADDRESS", "localhost:7233"))
     workflow_id = "claude-agent-sdk-streaming"
 
-    # @@@SNIPSTART python-claude-agent-sdk-streaming-client
     handle = await client.start_workflow(
         StreamingWorkflow.run,
         " ".join(sys.argv[1:]) or DEFAULT_PROMPT,
@@ -29,7 +28,6 @@ async def main() -> None:
             print(delta["text"], end="", flush=True)
 
     print(f"\nFinal result: {await handle.result()}")
-    # @@@SNIPEND
 
 
 if __name__ == "__main__":

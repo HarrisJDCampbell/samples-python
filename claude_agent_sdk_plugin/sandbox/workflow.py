@@ -29,7 +29,6 @@ class ToolDecision:
     approved: bool
 
 
-# @@@SNIPSTART python-claude-agent-sdk-sandbox-workflow
 @workflow.defn
 class SandboxWorkflow:
     def __init__(self) -> None:
@@ -75,6 +74,3 @@ class SandboxWorkflow:
     @workflow.update
     def decide_tool(self, decision: ToolDecision) -> None:
         self.decisions[decision.tool_use_id] = decision.approved
-
-
-# @@@SNIPEND

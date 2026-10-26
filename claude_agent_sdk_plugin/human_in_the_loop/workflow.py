@@ -27,7 +27,6 @@ class Decision:
     approved: bool
 
 
-# @@@SNIPSTART python-claude-agent-sdk-human-in-the-loop-workflow
 @workflow.defn
 class HumanInTheLoopWorkflow:
     def __init__(self) -> None:
@@ -76,6 +75,3 @@ class HumanInTheLoopWorkflow:
     def validate_decide(self, decision: Decision) -> None:
         if decision.tool_use_id not in self.pending:
             raise ValueError(f"No pending tool call {decision.tool_use_id}")
-
-
-# @@@SNIPEND

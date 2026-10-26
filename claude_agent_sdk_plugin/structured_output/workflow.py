@@ -1,4 +1,3 @@
-# @@@SNIPSTART python-claude-agent-sdk-structured-output-workflow
 from typing import Literal
 
 from claude_agent_sdk import ClaudeAgentOptions, ResultMessage, query
@@ -39,6 +38,3 @@ class TriageTicketWorkflow:
                 "Claude Code returned no structured output", non_retryable=True
             )
         return SupportTicket.model_validate(outcome.structured_output)
-
-
-# @@@SNIPEND

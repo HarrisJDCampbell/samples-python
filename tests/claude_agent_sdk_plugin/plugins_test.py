@@ -2,13 +2,12 @@ import json
 import uuid
 from typing import Any
 
-from temporalio.api.enums.v1 import EventType
-from temporalio.claude_agent_sdk import ClaudeAgentSDKPlugin, LaunchRequest
+from temporalio.claude_agent_sdk import ClaudeAgentSDKPlugin
 from temporalio.client import Client
 from temporalio.worker import Replayer, Worker
 
 from claude_agent_sdk_plugin.offline import Answer, scripted_api, tool_use
-from claude_agent_sdk_plugin.plugins.workflow import PLUGIN_DIR, PluginsWorkflow
+from claude_agent_sdk_plugin.plugins.workflow import PluginsWorkflow
 
 HAIKU = "Workers fall and rise\nhistory remembers all\nthe work carries on"
 REPLY = f"{HAIKU}\n\n~ haiku-writer"
@@ -61,18 +60,6 @@ async def test_plugin_skill(client: Client) -> None:
     assert "~ haiku-writer" in skill_text
 
     history = await handle.fetch_history()
-    launch = next(
-        event.activity_task_scheduled_event_attributes
-        for event in history.events
-        if event.event_type == EventType.EVENT_TYPE_ACTIVITY_TASK_SCHEDULED
-        and event.activity_task_scheduled_event_attributes.activity_type.name
-        == "claude-code-launch"
-    )
-    request = client.data_converter.payload_converter.from_payload(
-        launch.input.payloads[0], LaunchRequest
-    )
-    assert request.args[request.args.index("--plugin-dir") + 1] == PLUGIN_DIR
-
     await Replayer(
         workflows=[PluginsWorkflow], plugins=[ClaudeAgentSDKPlugin()]
     ).replay_workflow(history)

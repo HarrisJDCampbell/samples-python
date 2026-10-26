@@ -36,7 +36,6 @@ OFFLINE_ANSWERS: dict[str, Answer] = {
 }
 
 
-# @@@SNIPSTART python-claude-agent-sdk-human-in-the-loop-worker
 async def main() -> None:
     client = await Client.connect(os.environ.get("TEMPORAL_ADDRESS", "localhost:7233"))
     worker = Worker(
@@ -48,9 +47,6 @@ async def main() -> None:
     with offline_api_if_requested(OFFLINE_ANSWERS):
         print("Worker started. Ctrl+C to exit.")
         await worker.run()
-
-
-# @@@SNIPEND
 
 
 if __name__ == "__main__":

@@ -1,4 +1,3 @@
-# @@@SNIPSTART python-claude-agent-sdk-streaming-workflow
 from datetime import timedelta
 
 from claude_agent_sdk import ClaudeAgentOptions, ClaudeSDKClient, ResultMessage
@@ -25,6 +24,3 @@ class StreamingWorkflow:
                     result = message.result or ""
         await workflow.sleep(timedelta(milliseconds=500))
         return result
-
-
-# @@@SNIPEND

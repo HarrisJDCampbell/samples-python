@@ -20,7 +20,6 @@ OFFLINE_ANSWERS = {
 }
 
 
-# @@@SNIPSTART python-claude-agent-sdk-structured-output-worker
 async def main() -> None:
     client = await Client.connect(
         os.environ.get("TEMPORAL_ADDRESS", "localhost:7233"),
@@ -35,9 +34,6 @@ async def main() -> None:
     with offline_api_if_requested(OFFLINE_ANSWERS):
         print("Worker started. Ctrl+C to exit.")
         await worker.run()
-
-
-# @@@SNIPEND
 
 
 if __name__ == "__main__":
