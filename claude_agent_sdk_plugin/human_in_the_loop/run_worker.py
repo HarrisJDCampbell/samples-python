@@ -1,0 +1,57 @@
+import asyncio
+import os
+from typing import Any
+
+from temporalio.claude_agent_sdk import ClaudeAgentSDKPlugin
+from temporalio.client import Client
+from temporalio.worker import Worker
+
+from claude_agent_sdk_plugin.human_in_the_loop.workflow import HumanInTheLoopWorkflow
+from claude_agent_sdk_plugin.offline import Answer, offline_api_if_requested, tool_use
+
+TOOL_USE_ID = "toolu_hello"
+
+
+def tool_result(request: dict[str, Any]) -> dict[str, Any]:
+    return next(
+        block
+        for message in request["messages"]
+        if isinstance(message["content"], list)
+        for block in message["content"]
+        if block.get("tool_use_id") == TOOL_USE_ID
+    )
+
+
+def after_decision(request: dict[str, Any]) -> str:
+    if tool_result(request).get("is_error"):
+        return "Understood. I did not create hello.txt."
+    return "Created hello.txt."
+
+
+OFFLINE_ANSWERS: dict[str, Answer] = {
+    f"tool_result:{TOOL_USE_ID}": after_decision,
+    "hello.txt": tool_use(
+        TOOL_USE_ID, "Bash", command="echo 'Hello from Claude Code' > hello.txt"
+    ),
+}
+
+
+# @@@SNIPSTART python-claude-agent-sdk-human-in-the-loop-worker
+async def main() -> None:
+    client = await Client.connect(os.environ.get("TEMPORAL_ADDRESS", "localhost:7233"))
+    worker = Worker(
+        client,
+        task_queue="claude-agent-sdk-human-in-the-loop",
+        workflows=[HumanInTheLoopWorkflow],
+        plugins=[ClaudeAgentSDKPlugin()],
+    )
+    with offline_api_if_requested(OFFLINE_ANSWERS):
+        print("Worker started. Ctrl+C to exit.")
+        await worker.run()
+
+
+# @@@SNIPEND
+
+
+if __name__ == "__main__":
+    asyncio.run(main())

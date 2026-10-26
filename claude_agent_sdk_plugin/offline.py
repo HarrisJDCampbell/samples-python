@@ -73,7 +73,14 @@ def scripted_api(answers: Mapping[str, Answer]) -> Iterator[ScriptedApi]:
             "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
             "CLAUDE_CONFIG_DIR": config_dir,
         }
-        saved = {name: os.environ.get(name) for name in env}
+        inherited = [
+            name
+            for name in os.environ
+            if name == "CLAUDECODE" or name.startswith("CLAUDE_CODE_")
+        ]
+        saved = {name: os.environ.get(name) for name in [*inherited, *env]}
+        for name in inherited:
+            del os.environ[name]
         os.environ.update(env)
         try:
             yield api

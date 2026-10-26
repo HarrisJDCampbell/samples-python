@@ -1,0 +1,10 @@
+---
+name: haiku
+description: Write the answer as a haiku. Use when the user asks for a haiku or a poem.
+---
+
+Answer with a single haiku: three lines of five, seven, and five syllables.
+
+After the haiku, add a blank line and then this exact signature line:
+
+~ haiku-writer
